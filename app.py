@@ -29,8 +29,8 @@ def submit_survey():
     except ValidationError as ve:
         return jsonify({"error": "validation_error", "detail": ve.errors()}), 422
 
-    record = StoredSurveyRecord(
-        **submission.dict(),
+    record = StoredSurveyRecord.from_submission(
+        submission=submission,
         received_at=datetime.now(timezone.utc),
         ip=request.headers.get("X-Forwarded-For", request.remote_addr or "")
     )
